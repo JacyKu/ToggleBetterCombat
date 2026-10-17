@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
+          java-version: "17"
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p dist
           cp fabric/build/libs/togglebettercombat-fabric-*.jar dist/
-          cp neoforge/build/libs/togglebettercombat-neoforge-*.jar dist/
+          cp forge/build/libs/togglebettercombat-forge-*.jar dist/
           rm -f dist/*-sources.jar dist/*-dev-shadow.jar
           ls -l dist
 

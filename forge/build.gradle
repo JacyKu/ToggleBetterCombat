@@ -1,0 +1,80 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+loom {
+    forge {
+        mixinConfig "togglebettercombat.mixins.json"
+        mixinConfig "togglebettercombat.client.mixins.json"
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    devMixinExtras {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:$rootProject.minecraft_version-$rootProject.forge_version"
+
+    modApi "dev.architectury:architectury-forge:$rootProject.architectury_api_version"
+
+    modImplementation "maven.modrinth:better-combat:${rootProject.bettercombat_version}-forge"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:$rootProject.player_anim_version"
+    // Required by Better Combat at runtime; not used by this mod.
+    modLocalRuntime "me.shedaniel.cloth:cloth-config-forge:$rootProject.cloth_config_version"
+
+    // Better Combat bundles MixinExtras as a nested jar, which Forge does not
+    // load from classpath mods in dev. Copy the Forge wrapper into run/mods.
+    devMixinExtras "io.github.llamalad7:mixinextras-forge:$rootProject.mixin_extras_version"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+}
+
+tasks.register('copyMixinExtras', Copy) {
+    from configurations.devMixinExtras
+    include '*.jar'
+    into layout.projectDirectory.dir('run/mods')
+}
+
+tasks.matching { it.name == 'runServer' || it.name == 'runClient' }.configureEach {
+    dependsOn 'copyMixinExtras'
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier.set('dev-shadow')
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+}

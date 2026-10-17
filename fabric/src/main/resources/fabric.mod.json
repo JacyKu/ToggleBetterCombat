@@ -3,7 +3,7 @@
   "id": "togglebettercombat",
   "version": "${version}",
   "name": "Toggle Better Combat",
-  "description": "Adds a keybind to toggle Better Combat's weapon swinging per player. The server owns and remembers the state, and vanilla sweeping works again while Better Combat is off.",
+  "description": "Adds a keybind to toggle Better Combat's weapon swinging per player.",
   "authors": [
     "jkitter",
     "Deepacat"
@@ -23,10 +23,10 @@
     "togglebettercombat.client.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.21.1 <1.21.2",
-    "fabricloader": ">=0.16.5",
-    "fabric-api": ">=0.103.0",
-    "architectury": ">=13.0.11 <14.0.0",
-    "bettercombat": ">=2.4.0 <2.5.0"
+    "minecraft": ">=1.20.1 <1.20.2",
+    "fabricloader": ">=0.14.21",
+    "fabric-api": ">=0.83.1",
+    "architectury": ">=9.2.0 <10.0.0",
+    "bettercombat": ">=1.9.0 <1.10.0"
   }
 }

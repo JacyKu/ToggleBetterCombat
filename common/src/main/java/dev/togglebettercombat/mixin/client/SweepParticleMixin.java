@@ -1,6 +1,6 @@
 package dev.togglebettercombat.mixin.client;
 
-import net.bettercombat.api.CombatFlags;
+import dev.togglebettercombat.ToggleState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
@@ -11,13 +11,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Better Combat's client config suppresses vanilla sweep particles globally
- * ({@code isSweepingParticleEnabled = false} by default), even while its attack
- * handling is disabled. Spawn the sweep particle ourselves before Better
- * Combat's cancellation runs, so vanilla sweeping looks vanilla again.
+ * Restores vanilla sweep particles for toggled-off players, bypassing Better
+ * Combat's optional particle suppression.
  *
- * <p>Priority 1 applies after Better Combat's default-priority HEAD injection,
- * which makes this injection run first.</p>
+ * <p>Priority 1 applies this injection after Better Combat's default-priority
+ * HEAD injection, so this one runs first.</p>
  */
 @Mixin(value = ClientPlayNetworkHandler.class, priority = 1)
 public abstract class SweepParticleMixin {
@@ -30,7 +28,7 @@ public abstract class SweepParticleMixin {
         if (client.player == null || client.world == null) {
             return;
         }
-        if (!CombatFlags.isAttackDisabled(client.player)) {
+        if (!ToggleState.isDisabled(client.player)) {
             return;
         }
         if (!packet.getParameters().getType().equals(ParticleTypes.SWEEP_ATTACK)) {

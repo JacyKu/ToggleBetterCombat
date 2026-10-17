@@ -1,6 +1,6 @@
 # Toggle Better Combat
 
-Server-authoritative Better Combat toggle for Minecraft 1.21.1 (Fabric + NeoForge).
+Server-authoritative Better Combat toggle for Minecraft 1.20.1 (Fabric + Forge).
 
 **Developers:** jkitter, Deepacat
 
@@ -8,26 +8,28 @@ Server-authoritative Better Combat toggle for Minecraft 1.21.1 (Fabric + NeoForg
 
 - `B`: toggle Better Combat swinging
 - Server-stored state; survives relogs/respawns
-- Off: vanilla attacks/sweeping, poses, offhand, sweep particles; no dual-wield speed
+- Off: vanilla attacks/sweeping, offhand, sweep particles; no dual-wield speed
 - Client notification: action bar or toast
+- No server config
+
 ## Requires
 
-- Minecraft 1.21.1, Java 21
-- Better Combat 2.4.x
-- Architectury API 13.x
-- Fabric Loader 0.16.5+, Fabric API 0.103.0+1.21.1 (Fabric)
-- NeoForge 21.1.x (NeoForge)
+- Minecraft 1.20.1, Java 17
+- Better Combat 1.9.x
+- Architectury API 9.x
+- Fabric Loader 0.14.21+, Fabric API 0.83.1+1.20.1 (Fabric)
+- Forge 47.1.x (Forge)
 - Better Combat's dependencies
 
-Server required. Client optional; keybind and config need it.
+Server required. Client required for the keybind and feedback.
 
 ## Build
 
 `.\gradlew.bat build`
 
 ```
-fabric/build/libs/togglebettercombat-fabric-1.0.0+1.21.1.jar
-neoforge/build/libs/togglebettercombat-neoforge-1.0.0+1.21.1.jar
+fabric/build/libs/togglebettercombat-fabric-1.0.0+1.20.1.jar
+forge/build/libs/togglebettercombat-forge-1.0.0+1.20.1.jar
 ```
 
 ## Config
@@ -38,11 +40,11 @@ neoforge/build/libs/togglebettercombat-neoforge-1.0.0+1.21.1.jar
 { "notificationStyle": "ACTION_BAR" }
 ```
 
-`ACTION_BAR` or `TOAST`. Restart after editing.
+`ACTION_BAR` or `TOAST`. Changes apply on the next toggle; no restart needed.
 
 ## Dev
 
 ```powershell
 .\gradlew.bat :fabric:runClient
-.\gradlew.bat :neoforge:runClient
+.\gradlew.bat :forge:runClient
 ```

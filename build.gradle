@@ -1,7 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.7.435' apply false
+    id 'dev.architectury.loom' version '1.4.390' apply false
     id 'architectury-plugin' version '3.4.164'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
 
 architectury {
@@ -27,12 +27,9 @@ subprojects {
         mavenCentral()
         maven { url 'https://maven.architectury.dev/' }
         maven { url 'https://maven.fabricmc.net/' }
+        maven { url 'https://maven.minecraftforge.net/' }
         maven { url 'https://maven.shedaniel.me/' }
         maven { url 'https://maven.kosmx.dev/' }
-        maven {
-            name = 'NeoForged'
-            url = 'https://maven.neoforged.net/releases'
-        }
         maven {
             name = 'Modrinth'
             url = 'https://api.modrinth.com/maven'
@@ -43,20 +40,22 @@ subprojects {
     }
 
     dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-        mappings loom.layered {
-            it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
-            it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
-        }
+        minecraft "com.mojang:minecraft:$rootProject.minecraft_version"
+        mappings "net.fabricmc:yarn:$rootProject.yarn_mappings:v2"
     }
 
     java {
         withSourcesJar()
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 21
+        it.options.release = 17
+        it.options.encoding = 'UTF-8'
+    }
+
+    loom {
+        silentMojangMappingsLicense()
     }
 }

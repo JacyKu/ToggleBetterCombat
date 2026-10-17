@@ -13,14 +13,15 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 /**
- * Client-only config. Plain JSON, no config library required.
- * Stored in {@code config/togglebettercombat-client.json}.
+ * Client-only JSON config. Reloads automatically when the file changes, so a
+ * new notification style applies on the next toggle without restarting.
  */
 public final class ToggleClientConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path PATH = Platform.getConfigFolder().resolve("togglebettercombat-client.json");
 
     private static NotificationStyle notificationStyle = NotificationStyle.ACTION_BAR;
+    private static long lastModified = -1L;
 
     public enum NotificationStyle {
         ACTION_BAR,
@@ -41,14 +42,15 @@ public final class ToggleClientConfig {
             notificationStyle = data == null
                     ? NotificationStyle.ACTION_BAR
                     : data.parseStyle();
+            lastModified = lastModified();
         } catch (Exception exception) {
+            lastModified = lastModified();
             ToggleBetterCombat.LOGGER.warn(
-                    "Could not read client config at {}; using {}",
+                    "Could not read client config at {}; keeping {}",
                     PATH,
-                    NotificationStyle.ACTION_BAR,
+                    notificationStyle,
                     exception
             );
-            notificationStyle = NotificationStyle.ACTION_BAR;
         }
     }
 
@@ -61,13 +63,33 @@ public final class ToggleClientConfig {
             try (Writer writer = Files.newBufferedWriter(PATH)) {
                 GSON.toJson(data, writer);
             }
+            lastModified = lastModified();
         } catch (IOException exception) {
             ToggleBetterCombat.LOGGER.warn("Could not write client config at {}", PATH, exception);
         }
     }
 
     public static NotificationStyle notificationStyle() {
+        reloadIfChanged();
         return notificationStyle;
+    }
+
+    private static void reloadIfChanged() {
+        if (Files.notExists(PATH)) {
+            return;
+        }
+        long modified = lastModified();
+        if (modified != -1L && modified != lastModified) {
+            load();
+        }
+    }
+
+    private static long lastModified() {
+        try {
+            return Files.getLastModifiedTime(PATH).toMillis();
+        } catch (IOException exception) {
+            return -1L;
+        }
     }
 
     private static final class Data {

@@ -1,6 +1,6 @@
 package dev.togglebettercombat.mixin;
 
-import net.bettercombat.api.CombatFlags;
+import dev.togglebettercombat.ToggleState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -10,12 +10,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Better Combat hides the offhand while holding a two-handed weapon. When the
- * toggle is off, the player should get vanilla behavior (the offhand visible
- * and usable).
+ * Restores the offhand for toggled-off players, bypassing Better Combat's
+ * two-handed weapon restriction.
  *
- * <p>Priority 1 applies this injection after Better Combat's priority-899 HEAD
- * injection, which makes this one run first and prevents its cancellation.</p>
+ * <p>Priority 1 applies this injection after Better Combat's default-priority
+ * HEAD injection, so this one runs first and prevents its cancellation.</p>
  */
 @Mixin(value = PlayerEntity.class, priority = 1)
 public abstract class PlayerEntityOffhandMixin {
@@ -29,7 +28,7 @@ public abstract class PlayerEntityOffhandMixin {
         }
 
         PlayerEntity player = (PlayerEntity) (Object) this;
-        if (CombatFlags.isAttackDisabled(player)) {
+        if (ToggleState.isDisabled(player)) {
             cir.setReturnValue(player.getInventory().getStack(
                     EquipmentSlot.OFFHAND.getOffsetEntitySlotId(0)
             ));
