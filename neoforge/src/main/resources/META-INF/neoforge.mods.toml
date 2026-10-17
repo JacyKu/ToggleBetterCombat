@@ -12,6 +12,7 @@ Adds a keybind to toggle Better Combat's weapon swinging per player.
 The server owns and remembers the state, and vanilla sweeping works again
 while Better Combat is off.
 '''
+logoFile = "icon.png"
 displayTest = "IGNORE_ALL_VERSION"
 
 [[dependencies.togglebettercombat]]
