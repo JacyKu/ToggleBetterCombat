@@ -38,7 +38,7 @@ neoforge/build/libs/togglebettercombat-neoforge-1.0.0+1.21.1.jar
 { "notificationStyle": "ACTION_BAR" }
 ```
 
-`ACTION_BAR` or `TOAST`. Restart after editing.
+`ACTION_BAR` or `TOAST`. Changes apply on the next toggle; no restart needed.
 
 ## Dev
 
