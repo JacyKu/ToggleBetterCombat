@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.togglebettercombat.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerAttackHelperMixin",
+    "PlayerEntityOffhandMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

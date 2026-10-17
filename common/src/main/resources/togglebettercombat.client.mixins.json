@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.togglebettercombat.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "SweepParticleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

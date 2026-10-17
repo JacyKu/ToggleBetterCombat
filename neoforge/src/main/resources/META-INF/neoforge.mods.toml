@@ -1,0 +1,49 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "togglebettercombat"
+version = "${version}"
+displayName = "Toggle Better Combat"
+authors = "jkitter, Deepacat"
+description = '''
+Adds a keybind to toggle Better Combat's weapon swinging per player.
+The server owns and remembers the state, and vanilla sweeping works again
+while Better Combat is off.
+'''
+displayTest = "IGNORE_ALL_VERSION"
+
+[[dependencies.togglebettercombat]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.togglebettercombat]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.togglebettercombat]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.11,14.0.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.togglebettercombat]]
+modId = "bettercombat"
+type = "required"
+versionRange = "[2.4.0,2.5.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "togglebettercombat.mixins.json"
+
+[[mixins]]
+config = "togglebettercombat.client.mixins.json"

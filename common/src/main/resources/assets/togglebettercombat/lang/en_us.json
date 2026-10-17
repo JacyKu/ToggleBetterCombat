@@ -1,0 +1,7 @@
+{
+  "key.togglebettercombat.toggle": "Toggle Better Combat",
+  "key.categories.togglebettercombat": "Toggle Better Combat",
+  "message.togglebettercombat.enabled": "Better Combat: ON",
+  "message.togglebettercombat.disabled": "Better Combat: OFF (vanilla combat)",
+  "toast.togglebettercombat.title": "Toggle Better Combat"
+}
