@@ -34,6 +34,8 @@ forge/build/libs/togglebettercombat-forge-1.0.0+1.20.1.jar
 
 ## Config
 
+Open with `O` in-game, or use the Config button in the Forge mods screen.
+
 `config/togglebettercombat-client.json`
 
 ```json
