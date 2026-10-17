@@ -27,6 +27,13 @@ public final class ToggleBetterCombatClient {
             "key.categories.togglebettercombat"
     );
 
+    private static final KeyBinding CONFIG_KEY = new KeyBinding(
+            "key.togglebettercombat.config",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_O,
+            "key.categories.togglebettercombat"
+    );
+
     private static boolean synced;
     private static boolean suppressingBetterCombat;
 
@@ -36,6 +43,7 @@ public final class ToggleBetterCombatClient {
     public static void init() {
         ToggleClientConfig.load();
         KeyMappingRegistry.register(TOGGLE_KEY);
+        KeyMappingRegistry.register(CONFIG_KEY);
 
         NetworkManager.registerReceiver(
                 NetworkManager.Side.S2C,
@@ -75,6 +83,12 @@ public final class ToggleBetterCombatClient {
                             TogglePayload.ID,
                             new PacketByteBuf(Unpooled.buffer())
                     );
+                }
+            }
+
+            while (CONFIG_KEY.wasPressed()) {
+                if (client.currentScreen == null) {
+                    client.setScreen(new ToggleConfigScreen(null));
                 }
             }
 

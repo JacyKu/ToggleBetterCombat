@@ -74,6 +74,14 @@ public final class ToggleClientConfig {
         return notificationStyle;
     }
 
+    public static NotificationStyle cycleNotificationStyle() {
+        notificationStyle = notificationStyle == NotificationStyle.ACTION_BAR
+                ? NotificationStyle.TOAST
+                : NotificationStyle.ACTION_BAR;
+        save();
+        return notificationStyle;
+    }
+
     private static void reloadIfChanged() {
         if (Files.notExists(PATH)) {
             return;

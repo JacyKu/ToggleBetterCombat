@@ -1,7 +1,12 @@
 {
   "key.togglebettercombat.toggle": "Toggle Better Combat",
+  "key.togglebettercombat.config": "Open Config",
   "key.categories.togglebettercombat": "Toggle Better Combat",
   "message.togglebettercombat.enabled": "Better Combat: ON",
   "message.togglebettercombat.disabled": "Better Combat: OFF (vanilla combat)",
-  "toast.togglebettercombat.title": "Toggle Better Combat"
+  "toast.togglebettercombat.title": "Toggle Better Combat",
+  "screen.togglebettercombat.config.title": "Toggle Better Combat",
+  "screen.togglebettercombat.config.style": "Notification: %s",
+  "screen.togglebettercombat.config.style.action_bar": "Action bar",
+  "screen.togglebettercombat.config.style.toast": "Toast"
 }
