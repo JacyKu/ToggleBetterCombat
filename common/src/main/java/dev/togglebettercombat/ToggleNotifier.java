@@ -13,10 +13,18 @@ public final class ToggleNotifier {
     }
 
     public static void send(ServerPlayerEntity player, boolean disabled, boolean notify) {
-        NetworkManager.sendToPlayer(
-                player,
-                ToggleStatePayload.ID,
-                ToggleStatePayload.write(disabled, notify)
-        );
+        try {
+            NetworkManager.sendToPlayer(
+                    player,
+                    ToggleStatePayload.ID,
+                    ToggleStatePayload.write(disabled, notify)
+            );
+        } catch (Exception exception) {
+            ToggleBetterCombat.LOGGER.warn(
+                    "Failed to send toggle state to {}",
+                    player.getName().getString(),
+                    exception
+            );
+        }
     }
 }
