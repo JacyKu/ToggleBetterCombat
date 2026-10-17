@@ -32,6 +32,8 @@ neoforge/build/libs/togglebettercombat-neoforge-1.0.0+1.21.1.jar
 
 ## Config
 
+Open with `O` in-game, or use the config button in the Forge/NeoForge mods screen.
+
 `config/togglebettercombat-client.json`
 
 ```json

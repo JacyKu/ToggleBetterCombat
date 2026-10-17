@@ -22,12 +22,20 @@ public final class ToggleBetterCombatClient {
             "key.categories.togglebettercombat"
     );
 
+    private static final KeyBinding CONFIG_KEY = new KeyBinding(
+            "key.togglebettercombat.config",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_O,
+            "key.categories.togglebettercombat"
+    );
+
     private ToggleBetterCombatClient() {
     }
 
     public static void init() {
         ToggleClientConfig.load();
         KeyMappingRegistry.register(TOGGLE_KEY);
+        KeyMappingRegistry.register(CONFIG_KEY);
 
         // S2C feedback packet from the server; the client picks action bar or toast.
         NetworkManager.registerReceiver(
@@ -45,6 +53,12 @@ public final class ToggleBetterCombatClient {
                         && client.currentScreen == null
                         && NetworkManager.canServerReceive(TogglePayload.ID)) {
                     NetworkManager.sendToServer(TogglePayload.INSTANCE);
+                }
+            }
+
+            while (CONFIG_KEY.wasPressed()) {
+                if (client.player != null && client.currentScreen == null) {
+                    client.setScreen(new ToggleConfigScreen(null));
                 }
             }
         });
