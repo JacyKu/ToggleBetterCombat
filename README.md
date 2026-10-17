@@ -2,8 +2,6 @@
 
 Server-authoritative Better Combat toggle for Minecraft 1.20.1 (Fabric + Forge).
 
-**Developers:** jkitter, Deepacat
-
 ## Features
 
 - `B`: toggle Better Combat swinging
