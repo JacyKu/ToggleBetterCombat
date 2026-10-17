@@ -9,6 +9,7 @@
     "Deepacat"
   ],
   "license": "MIT",
+  "icon": "assets/togglebettercombat/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

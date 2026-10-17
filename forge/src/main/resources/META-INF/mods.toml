@@ -10,6 +10,7 @@ authors = "jkitter, Deepacat"
 description = '''
 Adds a keybind to toggle Better Combat's weapon swinging per player.
 '''
+logoFile = "icon.png"
 
 [[dependencies.togglebettercombat]]
 modId = "forge"
