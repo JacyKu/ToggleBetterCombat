@@ -36,6 +36,7 @@ public final class ToggleBetterCombat {
                 })
         );
 
+        PlayerEvent.PLAYER_JOIN.register(ToggleService::applySavedState);
         PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, wonGame) ->
                 ToggleService.copyState(oldPlayer, newPlayer)
         );

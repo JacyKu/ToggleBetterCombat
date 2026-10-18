@@ -25,16 +25,30 @@ public final class ToggleService {
         ((TogglePlayerNbt) player).togglebettercombat$setDisabled(disabled);
     }
 
+    public static void applySavedState(ServerPlayerEntity player) {
+        migrateLegacyTag(player);
+    }
+
     public static void copyState(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer) {
-        if (isDisabled(oldPlayer)) {
-            setDisabled(newPlayer, true);
-        }
+        TogglePlayerNbt oldState = (TogglePlayerNbt) oldPlayer;
+        TogglePlayerNbt newState = (TogglePlayerNbt) newPlayer;
+        newState.togglebettercombat$setDisabled(oldState.togglebettercombat$isDisabled());
+        newState.togglebettercombat$setMigrated(oldState.togglebettercombat$isMigrated());
     }
 
     public static void sync(ServerPlayerEntity player) {
-        if (player.getCommandTags().remove(LEGACY_TAG)) {
-            setDisabled(player, true);
-        }
+        migrateLegacyTag(player);
         ToggleNotifier.send(player, isDisabled(player), false);
+    }
+
+    private static void migrateLegacyTag(ServerPlayerEntity player) {
+        TogglePlayerNbt state = (TogglePlayerNbt) player;
+        if (state.togglebettercombat$isMigrated()) {
+            return;
+        }
+        if (player.getCommandTags().remove(LEGACY_TAG)) {
+            state.togglebettercombat$setDisabled(true);
+        }
+        state.togglebettercombat$setMigrated(true);
     }
 }
