@@ -3,16 +3,16 @@ package dev.togglebettercombat;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
- * Server-side toggle state, persisted as a vanilla command tag.
+ * Server-side toggle state, stored in the player's NBT.
  */
 public final class ToggleService {
-    public static final String TAG = "togglebettercombat_disabled";
+    private static final String LEGACY_TAG = "togglebettercombat_disabled";
 
     private ToggleService() {
     }
 
     public static boolean isDisabled(ServerPlayerEntity player) {
-        return player.getCommandTags().contains(TAG);
+        return ((TogglePlayerNbt) player).togglebettercombat$isDisabled();
     }
 
     public static void toggle(ServerPlayerEntity player) {
@@ -22,11 +22,7 @@ public final class ToggleService {
     }
 
     public static void setDisabled(ServerPlayerEntity player, boolean disabled) {
-        if (disabled) {
-            player.addCommandTag(TAG);
-        } else {
-            player.getCommandTags().remove(TAG);
-        }
+        ((TogglePlayerNbt) player).togglebettercombat$setDisabled(disabled);
     }
 
     public static void copyState(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer) {
@@ -36,6 +32,9 @@ public final class ToggleService {
     }
 
     public static void sync(ServerPlayerEntity player) {
+        if (player.getCommandTags().remove(LEGACY_TAG)) {
+            setDisabled(player, true);
+        }
         ToggleNotifier.send(player, isDisabled(player), false);
     }
 }
