@@ -18,6 +18,9 @@ public abstract class PlayerNbtMixin implements TogglePlayerNbt {
     @Unique
     private boolean togglebettercombat$disabled;
 
+    @Unique
+    private boolean togglebettercombat$migrated;
+
     @Override
     public boolean togglebettercombat$isDisabled() {
         return togglebettercombat$disabled;
@@ -28,9 +31,20 @@ public abstract class PlayerNbtMixin implements TogglePlayerNbt {
         togglebettercombat$disabled = disabled;
     }
 
+    @Override
+    public boolean togglebettercombat$isMigrated() {
+        return togglebettercombat$migrated;
+    }
+
+    @Override
+    public void togglebettercombat$setMigrated(boolean migrated) {
+        togglebettercombat$migrated = migrated;
+    }
+
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     private void togglebettercombat$read(NbtCompound nbt, CallbackInfo ci) {
         togglebettercombat$disabled = nbt.getBoolean(TogglePlayerNbt.NBT_KEY);
+        togglebettercombat$migrated = nbt.getBoolean(TogglePlayerNbt.NBT_MIGRATED_KEY);
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -39,6 +53,11 @@ public abstract class PlayerNbtMixin implements TogglePlayerNbt {
             nbt.putBoolean(TogglePlayerNbt.NBT_KEY, true);
         } else {
             nbt.remove(TogglePlayerNbt.NBT_KEY);
+        }
+        if (togglebettercombat$migrated) {
+            nbt.putBoolean(TogglePlayerNbt.NBT_MIGRATED_KEY, true);
+        } else {
+            nbt.remove(TogglePlayerNbt.NBT_MIGRATED_KEY);
         }
     }
 }

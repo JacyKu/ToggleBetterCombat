@@ -33,13 +33,18 @@ public final class ToggleService {
     }
 
     /**
-     * Re-applies the state on join and migrates the tags used by older builds.
+     * Re-applies the state on join. Legacy tags from older builds are migrated
+     * once per player, so later admin tags are left alone.
      */
     public static void applySavedState(ServerPlayerEntity player) {
-        boolean legacy = player.getCommandTags().remove(LEGACY_TAG);
-        legacy |= player.getCommandTags().remove(LEGACY_BC_TAG);
-        if (legacy) {
-            ((TogglePlayerNbt) player).togglebettercombat$setDisabled(true);
+        TogglePlayerNbt state = (TogglePlayerNbt) player;
+        if (!state.togglebettercombat$isMigrated()) {
+            boolean legacy = player.getCommandTags().remove(LEGACY_TAG);
+            legacy |= player.getCommandTags().remove(LEGACY_BC_TAG);
+            if (legacy) {
+                state.togglebettercombat$setDisabled(true);
+            }
+            state.togglebettercombat$setMigrated(true);
         }
         CombatFlags.setAttacksDisabled(player, isDisabled(player));
     }
@@ -48,8 +53,10 @@ public final class ToggleService {
      * Restores the toggle on the freshly created player entity after a respawn.
      */
     public static void copyState(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer) {
-        if (isDisabled(oldPlayer)) {
-            setDisabled(newPlayer, true);
-        }
+        TogglePlayerNbt oldState = (TogglePlayerNbt) oldPlayer;
+        TogglePlayerNbt newState = (TogglePlayerNbt) newPlayer;
+        newState.togglebettercombat$setDisabled(oldState.togglebettercombat$isDisabled());
+        newState.togglebettercombat$setMigrated(oldState.togglebettercombat$isMigrated());
+        CombatFlags.setAttacksDisabled(newPlayer, isDisabled(newPlayer));
     }
 }
