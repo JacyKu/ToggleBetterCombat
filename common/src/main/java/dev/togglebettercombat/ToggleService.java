@@ -4,22 +4,20 @@ import net.bettercombat.api.CombatFlags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
- * Server-authoritative toggle state.
+ * Server-authoritative toggle state, stored in the player's NBT.
  *
- * <p>We keep our own command tag instead of Better Combat's
- * {@code bettercombat_disabled} tag. That is important for uninstall safety:
- * if this mod is removed, Better Combat no longer sees a disable tag and works
- * normally again.</p>
+ * <p>No command tags are used during normal operation, so uninstalling this
+ * mod leaves only an inert NBT key and Better Combat works normally.</p>
  */
 public final class ToggleService {
-    public static final String TAG = "togglebettercombat_disabled";
-    private static final String LEGACY_TAG = CombatFlags.DISABLED_TAG;
+    private static final String LEGACY_TAG = "togglebettercombat_disabled";
+    private static final String LEGACY_BC_TAG = CombatFlags.DISABLED_TAG;
 
     private ToggleService() {
     }
 
     public static boolean isDisabled(ServerPlayerEntity player) {
-        return player.getCommandTags().contains(TAG);
+        return ((TogglePlayerNbt) player).togglebettercombat$isDisabled();
     }
 
     public static void toggle(ServerPlayerEntity player) {
@@ -29,24 +27,19 @@ public final class ToggleService {
     }
 
     public static void setDisabled(ServerPlayerEntity player, boolean disabled) {
-        if (disabled) {
-            player.addCommandTag(TAG);
-        } else {
-            player.removeCommandTag(TAG);
-        }
+        ((TogglePlayerNbt) player).togglebettercombat$setDisabled(disabled);
         // Runtime-only BC flag; not persisted by Better Combat.
         CombatFlags.setAttacksDisabled(player, disabled);
     }
 
     /**
-     * Re-applies the state on join and migrates the old
-     * {@code bettercombat_disabled} tag used by earlier builds.
+     * Re-applies the state on join and migrates the tags used by older builds.
      */
     public static void applySavedState(ServerPlayerEntity player) {
-        if (player.getCommandTags().contains(LEGACY_TAG)
-                && !player.getCommandTags().contains(TAG)) {
-            player.getCommandTags().remove(LEGACY_TAG);
-            player.addCommandTag(TAG);
+        boolean legacy = player.getCommandTags().remove(LEGACY_TAG);
+        legacy |= player.getCommandTags().remove(LEGACY_BC_TAG);
+        if (legacy) {
+            ((TogglePlayerNbt) player).togglebettercombat$setDisabled(true);
         }
         CombatFlags.setAttacksDisabled(player, isDisabled(player));
     }
