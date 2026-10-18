@@ -29,9 +29,7 @@ public abstract class PlayerEntityOffhandMixin {
 
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (ToggleState.isDisabled(player)) {
-            cir.setReturnValue(player.getInventory().getStack(
-                    EquipmentSlot.OFFHAND.getOffsetEntitySlotId(0)
-            ));
+            cir.setReturnValue(player.getInventory().offHand.get(0));
         }
     }
 }
