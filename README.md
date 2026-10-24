@@ -14,7 +14,7 @@ Server-authoritative Better Combat toggle for Minecraft 1.21.1 (Fabric + NeoForg
 - Better Combat 2.4.x
 - Architectury API 13.x
 - Fabric Loader 0.16.5+, Fabric API 0.103.0+1.21.1 (Fabric)
-- NeoForge 21.1.x (NeoForge)
+- NeoForge 21.1.x
 - Better Combat's dependencies
 
 Server required. Client optional; keybind and config need it.
