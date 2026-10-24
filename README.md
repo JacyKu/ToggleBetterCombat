@@ -16,7 +16,7 @@ Server-authoritative Better Combat toggle for Minecraft 1.20.1 (Fabric + Forge).
 - Better Combat 1.9.x
 - Architectury API 9.x
 - Fabric Loader 0.14.21+, Fabric API 0.83.1+1.20.1 (Fabric)
-- Forge 47.1.x (Forge)
+- Forge 47.1.x
 - Better Combat's dependencies
 
 Server required. Client required for the keybind and feedback.
